@@ -34,8 +34,9 @@ class _TodoProfilePageState extends State<TodoProfilePage> {
   //
   @override
   void dispose() {
-    titleController.clear();
-    detailController.clear();
+    titleController.text
+        .trim(); // or use clear() to clear the text of the textfield box
+    detailController.text.trim();
     super.dispose();
   }
 
@@ -252,14 +253,21 @@ class _TodoProfilePageState extends State<TodoProfilePage> {
         Expanded(
             child: TextButton.icon(
                 onPressed: () {
-                  _buildShowDialog(context);
+                  setState(() {
+                    titleController.clear();
+                    detailController.clear();
+                    _buildShowDialog(context);
+                  });
                 },
                 icon: Icon(Icons.edit),
                 label: Text('Edit'))),
         Expanded(
             child: TextButton.icon(
                 onPressed: () {
-                  return _buildShowDialogdelete(context);
+                  setState(() {
+                    titleController.clear();
+                    return _buildShowDialogdelete(context);
+                  });
                 },
                 icon: Icon(Icons.delete),
                 label: Text('Delete'))),
@@ -301,7 +309,7 @@ class _TodoProfilePageState extends State<TodoProfilePage> {
                                 padding: EdgeInsets.symmetric(
                                     horizontal: 32, vertical: 12)),
                             onPressed: () {
-                              final String title = titleController.text;
+                              final String title = titleController.text.trim();
 
                               // final double amount =
                               //     double.tryParse(amountController.text);
