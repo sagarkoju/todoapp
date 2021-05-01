@@ -34,8 +34,8 @@ class _TodoProfilePageState extends State<TodoProfilePage> {
   //
   @override
   void dispose() {
-    titleController.dispose();
-    detailController.dispose();
+    titleController.clear();
+    detailController.clear();
     super.dispose();
   }
 
@@ -122,6 +122,8 @@ class _TodoProfilePageState extends State<TodoProfilePage> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           setState(() {
+            titleController.clear();
+            detailController.clear();
             _buildShowDialog(context);
           });
         },
@@ -220,10 +222,8 @@ class _TodoProfilePageState extends State<TodoProfilePage> {
                                 final isValid = formKey.currentState.validate();
 
                                 if (isValid) {
-                                  final String title =
-                                      titleController.text.trim();
-                                  final String detail =
-                                      detailController.text.trim();
+                                  final String title = titleController.text;
+                                  final String detail = detailController.text;
 
                                   todoBox.put(title, detail);
                                   Navigator.pop(context);
