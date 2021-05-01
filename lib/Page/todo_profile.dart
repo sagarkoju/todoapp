@@ -264,10 +264,8 @@ class _TodoProfilePageState extends State<TodoProfilePage> {
         Expanded(
             child: TextButton.icon(
                 onPressed: () {
-                  setState(() {
-                    titleController.clear();
-                    return _buildShowDialogdelete(context);
-                  });
+                  titleController.clear();
+                  return _buildShowDialogdelete(context);
                 },
                 icon: Icon(Icons.delete),
                 label: Text('Delete'))),
@@ -289,7 +287,19 @@ class _TodoProfilePageState extends State<TodoProfilePage> {
                     TextField(
                       controller: titleController,
                       decoration: InputDecoration(
-                          hintText: "Title", border: OutlineInputBorder()),
+                          filled: true,
+                          fillColor: Colors.white,
+                          focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(100),
+                              borderSide: BorderSide(color: Colors.green)),
+                          enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(100),
+                              borderSide: BorderSide(color: Colors.green)),
+                          hintText: "Title",
+                          border: OutlineInputBorder()),
+                    ),
+                    SizedBox(
+                      height: 10,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -309,7 +319,7 @@ class _TodoProfilePageState extends State<TodoProfilePage> {
                                 padding: EdgeInsets.symmetric(
                                     horizontal: 32, vertical: 12)),
                             onPressed: () {
-                              final String title = titleController.text.trim();
+                              final String title = titleController.text;
 
                               // final double amount =
                               //     double.tryParse(amountController.text);
