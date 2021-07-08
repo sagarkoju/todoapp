@@ -7,9 +7,10 @@ import 'package:hive_flutter/hive_flutter.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  await Hive.initFlutter();
+  await Hive.initFlutter(); // initialze the Hive
   // Hive.registerAdapter(TransactionAdapter());
-  await Hive.openBox<String>("friends");
+  await Hive.openBox<String>(
+      "friends"); // creating a box    <string> type of data that we stored in the box // friend is the name of the box or variable that are use in the future
   runApp(MyApp());
 }
 

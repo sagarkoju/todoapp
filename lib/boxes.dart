@@ -5,3 +5,4 @@
 //   static Box<Transaction> getTransactions() =>
 //       Hive.box<Transaction>('transactions');
 // }
+//

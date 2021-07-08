@@ -12,9 +12,9 @@ class _TodoProfilePageState extends State<TodoProfilePage> {
   TextEditingController titleController = TextEditingController();
   TextEditingController detailController = TextEditingController();
   final formKey = GlobalKey<FormState>();
-  String task;
+  String? task;
 
-  Box<String> todoBox;
+  Box<String>? todoBox;
 
   @override
   void initState() {
@@ -49,7 +49,7 @@ class _TodoProfilePageState extends State<TodoProfilePage> {
         backgroundColor: Colors.teal,
       ),
       body: ValueListenableBuilder(
-          valueListenable: todoBox.listenable(), //  import flutter_hive in top
+          valueListenable: todoBox!.listenable(), //  import flutter_hive in top
           builder: (context, Box<String> todos, _) {
             return ListView.builder(
                 itemBuilder: (context, index) {
@@ -72,7 +72,7 @@ class _TodoProfilePageState extends State<TodoProfilePage> {
                         children: [
                           Expanded(
                             child: Text(
-                              detail,
+                              detail!,
                               style: TextStyle(
                                   fontSize: 18,
                                   fontWeight: FontWeight.bold,
@@ -125,7 +125,7 @@ class _TodoProfilePageState extends State<TodoProfilePage> {
           setState(() {
             titleController.clear();
             detailController.clear();
-            _buildShowDialog(context);
+            buildShowDialog(context);
           });
         },
         child: Icon(Icons.add),
@@ -133,9 +133,7 @@ class _TodoProfilePageState extends State<TodoProfilePage> {
     );
   }
 
-  Future _buildShowDialog(BuildContext context) {
-    AlertDialog();
-
+  buildShowDialog(BuildContext context) {
     return showDialog(
         useSafeArea: true,
         barrierDismissible: true,
@@ -190,12 +188,8 @@ class _TodoProfilePageState extends State<TodoProfilePage> {
                           border: OutlineInputBorder(),
                           filled: true,
                           fillColor: Colors.white,
-                          focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(100),
-                              borderSide: BorderSide(color: Colors.green)),
-                          enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(100),
-                              borderSide: BorderSide(color: Colors.green)),
+                          focusedBorder: outlineInputBorder(),
+                          enabledBorder: outlineInputBorder(),
                         ),
                       ),
                       SizedBox(
@@ -220,13 +214,14 @@ class _TodoProfilePageState extends State<TodoProfilePage> {
                                       horizontal: 32, vertical: 12)),
                               onPressed: () async {
                                 setState(() {});
-                                final isValid = formKey.currentState.validate();
+                                final isValid =
+                                    formKey.currentState!.validate();
 
                                 if (isValid) {
                                   final String title = titleController.text;
                                   final String detail = detailController.text;
 
-                                  todoBox.put(title, detail);
+                                  todoBox!.put(title, detail);
                                   Navigator.pop(context);
                                 }
 
@@ -245,6 +240,12 @@ class _TodoProfilePageState extends State<TodoProfilePage> {
         });
   }
 
+  OutlineInputBorder outlineInputBorder() {
+    return OutlineInputBorder(
+        borderRadius: BorderRadius.circular(100),
+        borderSide: BorderSide(color: Colors.green));
+  }
+
   Widget buildButtons(
     BuildContext context,
   ) {
@@ -256,7 +257,7 @@ class _TodoProfilePageState extends State<TodoProfilePage> {
                   setState(() {
                     titleController.clear();
                     detailController.clear();
-                    _buildShowDialog(context);
+                    buildShowDialog(context);
                   });
                 },
                 icon: Icon(Icons.edit),
@@ -265,7 +266,7 @@ class _TodoProfilePageState extends State<TodoProfilePage> {
             child: TextButton.icon(
                 onPressed: () {
                   titleController.clear();
-                  return _buildShowDialogdelete(context);
+                  buildShowDialogdelete();
                 },
                 icon: Icon(Icons.delete),
                 label: Text('Delete'))),
@@ -273,8 +274,8 @@ class _TodoProfilePageState extends State<TodoProfilePage> {
     );
   }
 
-  Future _buildShowDialogdelete(BuildContext context) {
-    return showDialog(
+  void buildShowDialogdelete() {
+    showDialog(
         context: context,
         builder: (context) {
           return Dialog(
@@ -324,7 +325,7 @@ class _TodoProfilePageState extends State<TodoProfilePage> {
                               // final double amount =
                               //     double.tryParse(amountController.text);
 
-                              todoBox.delete(title);
+                              todoBox!.delete(title);
                               Navigator.pop(context);
                             },
                             child: Text('Delete')),
