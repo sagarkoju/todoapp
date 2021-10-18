@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/intl.dart';
+import 'package:todoapp/model/transaction.dart';
 
 class TodoProfilePage extends StatefulWidget {
   @override
@@ -51,16 +52,24 @@ class _TodoProfilePageState extends State<TodoProfilePage> {
       body: ValueListenableBuilder(
           valueListenable: todoBox!.listenable(), //  import flutter_hive in top
           builder: (context, Box<String> todos, _) {
+            if (todoBox!.values.isEmpty) {
+              return Center(
+                child: Text('No Data in the List'),
+              );
+            }
             return ListView.builder(
                 itemBuilder: (context, index) {
                   final title = todos.keys.toList()[index];
                   final detail = todos.get(title);
+
+                  // we can use a getAt method to here
+                  Transaction? res = todoBox!.getAt(index) as Transaction;
                   final date = DateFormat.yMMMd().format(DateTime.now());
                   return Card(
                     color: Colors.white,
                     child: ExpansionTile(
                       title: Text(
-                        title,
+                        res.title ?? '',   // or we can use title here
                         style: TextStyle(
                             fontSize: 24,
                             fontWeight: FontWeight.bold,
@@ -72,7 +81,7 @@ class _TodoProfilePageState extends State<TodoProfilePage> {
                         children: [
                           Expanded(
                             child: Text(
-                              detail!,
+                              res.detail ?? '',  // or we can use here detail! here
                               style: TextStyle(
                                   fontSize: 18,
                                   fontWeight: FontWeight.bold,
@@ -117,7 +126,7 @@ class _TodoProfilePageState extends State<TodoProfilePage> {
                   // );
                 },
                 // separatorBuilder: (_, index) => Divider(),
-                itemCount: todos.keys.toList().length);
+                itemCount: todos.keys.toList().length); // todos.values.length
           }),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton(
@@ -221,7 +230,8 @@ class _TodoProfilePageState extends State<TodoProfilePage> {
                                   final String title = titleController.text;
                                   final String detail = detailController.text;
 
-                                  todoBox!.put(title, detail);
+                                  todoBox!.put(title,
+                                      detail); // put() method to store any values.
                                   Navigator.pop(context);
                                 }
 
